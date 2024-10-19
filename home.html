@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Weather Monitoring</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Monitoring System</h1>
+        <div class="form-group">
+            <input type="text" id="city" placeholder="Enter city name">
+            <button onclick="fetchWeather()">Get Weather</button>
+        </div>
+        <div id="weather-results"></div>
+    </div>
+
+    <script>
+        function fetchWeather() {
+            const city = document.getElementById('city').value;
+            fetch(`/api/weather/${city}/current`)
+                .then(response => response.json())
+                .then(data => {
+                    let resultsHtml = '<h2>Current Weather:</h2>';
+                    data.forEach(item => {
+                        resultsHtml += `<p>Temperature: ${item.temperature} °C, Condition: ${item.condition}</p>`;
+                    });
+                    document.getElementById('weather-results').innerHTML = resultsHtml;
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+    </script>
+</body>
+</html>
